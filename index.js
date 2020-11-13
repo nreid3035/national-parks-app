@@ -17,6 +17,23 @@ let params = {
     states: [],
     maxResults: 10
 }
+
+function formatQueryParams(params) {
+    let result = [];
+    for (let i = 0; i < params.states.length; i++) {
+        result.push(`stateCode=${params.states[i]}`);
+    } 
+    console.log(result.join('&'))
+}
+
+function fetchParks() {
+    fetch('https://developer.nps.gov/api/v1/parks?')
+      .then(response => response.json())
+      .then(responseJson => console.log(responseJson))
+}
+
+
+
  function getDataFromForm() {
      $('form').on('submit', function(event) {
         event.preventDefault();
@@ -24,7 +41,8 @@ let params = {
         $.each($("input[name='states']:checked"), function() {
             params.states.push($(this).val());
         })
-        console.log(params) 
+        console.log(params)
+        formatQueryParams(params);
      })
  }
 
