@@ -19,17 +19,20 @@ let params = {
 }
 
 function formatQueryParams(params) {
-    let result = [];
+    let result = ['stateCode='];
     for (let i = 0; i < params.states.length; i++) {
-        result.push(`stateCode=${params.states[i]}`);
+        result.push(`${params.states[i]}%2C`);
     } 
-    console.log(result.join('&'))
+    let joinedResult = result.join('')
+    console.log(joinedResult);
+    return joinedResult
+    
 }
-
-function fetchParks() {
-    fetch('https://developer.nps.gov/api/v1/parks?')
+function fetchParks(fetchParam) {
+    fetch(`https://developer.nps.gov/api/v1/parks?api_key=${apiKey}&${fetchParam}&limit=${params.maxResults}`)
       .then(response => response.json())
       .then(responseJson => console.log(responseJson))
+      .catch(error => console.log(error))
 }
 
 
@@ -41,8 +44,8 @@ function fetchParks() {
         $.each($("input[name='states']:checked"), function() {
             params.states.push($(this).val());
         })
-        console.log(params)
-        formatQueryParams(params);
+        let fetchParam = formatQueryParams(params)
+        fetchParks(fetchParam);
      })
  }
 
